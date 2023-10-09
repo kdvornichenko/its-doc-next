@@ -8,19 +8,22 @@ import { useTheme } from "next-themes"
 type Props = {}
 
 import React from 'react';
+import { Icon } from "./icon"
+import { SidebarAccordionItem, SidebarListbox } from "@/types/sidebar"
 
 export const Sidebar = (props: Props) => {
-  const sidebarAccordion = [
+  const sidebarAccordion: SidebarAccordionItem[] = [
     {
       key: 'checklists',
       ariaLabel: 'Чеклисты',
       title: 'Чеклисты',
+      icon: 'checklist',
       listbox: {
         links: [
           {
             key: 'backend',
             link: {
-              label: 'Backend-specificaion',
+              label: 'Backend-specification',
               href: '#',
             },
           },
@@ -45,6 +48,7 @@ export const Sidebar = (props: Props) => {
       key: 'Bitrix',
       ariaLabel: 'Bitrix',
       title: 'Bitrix',
+      icon: 'bitrix',
       listbox: {
         accordions: [
           {
@@ -52,15 +56,6 @@ export const Sidebar = (props: Props) => {
             ariaLabel: 'Integration-1C',
             title: 'Integration-1C',
             listbox: {
-              // links: [
-              //   {
-              //     key: 'imitation',
-              //     link: {
-              //       label: 'Imitation',
-              //       href: '#',
-              //     },
-              //   },
-              // ],
               accordions: [
                 {
                   key: 'bitrix-integration-2',
@@ -108,7 +103,7 @@ export const Sidebar = (props: Props) => {
     if (listbox.links) {
       return (
         <ListboxWrapper>
-          <Listbox items={listbox.links}>
+          <Listbox aria-label="list" variant="bordered" items={listbox.links}>
             {(item) => (
               <ListboxItem
                 key={item.key}
@@ -126,11 +121,17 @@ export const Sidebar = (props: Props) => {
     } else if (listbox.accordions) {
       return (
         listbox.accordions.map((item) => (
-          <Accordion variant="light" selectionMode="multiple" isCompact key={item.key}>
+          <Accordion
+            variant="splitted"
+            selectionMode="multiple"
+            isCompact
+            key={item.key}
+            showDivider
+          >
             <AccordionItem
               aria-label={item.ariaLabel}
               title={item.title}
-              className="border-l-1 pl-2 my-2"
+              className="my-2"
             >
               {renderListbox(item.listbox)}
             </AccordionItem>
@@ -141,9 +142,19 @@ export const Sidebar = (props: Props) => {
   };
 
   return (
-    <Accordion variant="bordered" selectionMode="multiple" isCompact>
+    <Accordion
+      variant="splitted"
+      selectionMode="multiple"
+      isCompact
+      showDivider
+    >
       {sidebarAccordion.map((item) => (
-        <AccordionItem key={item.key} aria-label={item.ariaLabel} title={item.title}>
+        <AccordionItem
+          key={item.key}
+          aria-label={item.ariaLabel}
+          title={item.title}
+          startContent={<Icon icon={item.icon ? item.icon : null} />}
+        >
           {renderListbox(item.listbox)}
         </AccordionItem>
       ))}

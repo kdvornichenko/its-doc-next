@@ -1,21 +1,24 @@
-interface SidebarAccordionItem {
+export type IconProps = 'checklist' | 'bitrix' | null
+
+export interface SidebarAccordionItem {
     key: string
     ariaLabel: string
     title: string
     listbox: SidebarListbox
+    icon?: IconProps
 }
 
-interface SidebarListbox {
+export interface SidebarListbox {
     links?: SidebarListItem[]
     accordions?: SidebarAccordionItem[]
 }
 
-interface SidebarListItem {
+export interface SidebarListItem {
     key: string
     link: SidebarLink
 }
 
-interface SidebarLink {
+export interface SidebarLink {
     label: string
     href: string
 }
